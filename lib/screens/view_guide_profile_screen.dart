@@ -1,217 +1,251 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/theme/app_theme.dart';
 import 'chat_screen.dart';
 
-class ViewGuideProfileScreen extends StatelessWidget {
+class ViewGuideProfileScreen extends StatefulWidget {
   final String guideName;
 
   const ViewGuideProfileScreen({super.key, required this.guideName});
 
   @override
+  _ViewGuideProfileScreenState createState() => _ViewGuideProfileScreenState();
+}
+
+class _ViewGuideProfileScreenState extends State<ViewGuideProfileScreen> {
+  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar.large(
-            expandedHeight: 200,
-            title: Text(guideName),
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              background: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/face.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [
-                        Colors.black.withOpacity(0.7),
-                        Colors.transparent,
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              background: Stack(
+                fit: StackFit.expand,
                 children: [
-                  // Profile Header
-                  Row(
-                    children: [
-                      const CircleAvatar(
-                        radius: 40,
-                        backgroundImage: AssetImage('assets/images/face.jpg'),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              guideName,
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
-                            Text(
-                              '28 • Paris, France',
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ],
+                  Image.asset(
+                    'assets/images/1.jpg',
+                    fit: BoxFit.cover,
+                    errorBuilder:
+                        (ctx, err, st) => Container(
+                          color: colorScheme.surfaceContainerHighest,
+                          child: Icon(
+                            Icons.person_outline_rounded,
+                            size: 100,
+                            color: colorScheme.primary,
+                          ),
                         ),
-                      ),
-                    ],
                   ),
-                  const SizedBox(height: 24),
-
-                  // About Section
-                  Text(
-                    'About Me',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Passionate local guide with extensive knowledge of Parisian culture, history, and hidden gems. Love showing visitors the authentic side of Paris.',
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Languages Section
-                  Text(
-                    'Languages Spoken',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 8,
-                    children: [
-                      Chip(
-                        label: const Text('English'),
-                        backgroundColor:
-                            Theme.of(context).colorScheme.primaryContainer,
-                      ),
-                      Chip(
-                        label: const Text('French'),
-                        backgroundColor:
-                            Theme.of(context).colorScheme.primaryContainer,
-                      ),
-                      Chip(
-                        label: const Text('Spanish'),
-                        backgroundColor:
-                            Theme.of(context).colorScheme.primaryContainer,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Availability Section
-                  Text(
-                    'Availability Notes',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Available most weekends and weekday evenings. Flexible scheduling for full-day tours.',
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Reviews Section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Reviews',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      Row(
-                        children: [
-                          const Icon(Icons.star, color: Colors.amber),
-                          const SizedBox(width: 4),
-                          Text(
-                            '4.8',
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          Text(
-                            ' (124)',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withOpacity(0.7),
                         ],
+                        stops: const [0.6, 1.0],
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  const CircleAvatar(
-                                    radius: 16,
-                                    child: Icon(Icons.person, size: 20),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    'Tourist ${index + 1}',
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
-                                  ),
-                                  const Spacer(),
-                                  Row(
-                                    children: List.generate(
-                                      5,
-                                      (starIndex) => Icon(
-                                        Icons.star,
-                                        size: 16,
-                                        color:
-                                            starIndex < 4
-                                                ? Colors.amber
-                                                : Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              const Text(
-                                'Great experience! Our guide was knowledgeable and showed us amazing local spots we would never have found on our own.',
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
+                    ),
                   ),
                 ],
               ),
             ),
           ),
+          SliverToBoxAdapter(
+            child: Transform.translate(
+              offset: const Offset(0, -30),
+              child: Padding(
+                padding: const EdgeInsets.all(AppTheme.paddingLg),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(AppTheme.paddingLg),
+                      decoration: BoxDecoration(
+                        color: colorScheme.surface,
+                        borderRadius: BorderRadius.circular(
+                          AppTheme.borderRadiusLg,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: colorScheme.shadow.withOpacity(0.1),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      widget.guideName,
+                                      style: textTheme.headlineMedium?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: AppTheme.paddingXs),
+                                    Text(
+                                      'Professional Tour Guide',
+                                      style: textTheme.titleMedium?.copyWith(
+                                        color: colorScheme.primary,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              FilledButton.icon(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (_) => ChatScreen(
+                                            otherUserName: widget.guideName,
+                                          ),
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(Icons.chat_outlined),
+                                label: const Text('Message'),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: AppTheme.paddingLg),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              _buildStat(
+                                context,
+                                '4.9',
+                                'Rating',
+                                Icons.star_rounded,
+                              ),
+                              _buildStat(
+                                context,
+                                '127',
+                                'Tours',
+                                Icons.map_outlined,
+                              ),
+                              _buildStat(
+                                context,
+                                '1.2k',
+                                'Reviews',
+                                Icons.rate_review_outlined,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppTheme.paddingLg),
+                    Text(
+                      'About',
+                      style: textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: AppTheme.paddingMd),
+                    Text(
+                      'Professional tour guide with 5+ years of experience showcasing the beauty and culture of Iran. Specialized in historical tours and photography experiences.',
+                      style: textTheme.bodyLarge?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: AppTheme.paddingLg),
+                    Text(
+                      'Specialties',
+                      style: textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: AppTheme.paddingMd),
+                    Wrap(
+                      spacing: AppTheme.paddingSm,
+                      runSpacing: AppTheme.paddingSm,
+                      children:
+                          [
+                                'Historical Tours',
+                                'Photography',
+                                'Cultural Experiences',
+                                'Local Cuisine',
+                                'Architecture',
+                              ]
+                              .map(
+                                (specialty) => Chip(
+                                  label: Text(specialty),
+                                  backgroundColor: colorScheme.surfaceContainerHighest,
+                                  labelStyle: textTheme.bodyMedium?.copyWith(
+                                    color: colorScheme.onSurfaceVariant,
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                    ),
+                    const SizedBox(height: AppTheme.paddingLg),
+                    FilledButton(
+                      onPressed: () {
+                        // TODO: Implement booking flow
+                      },
+                      style: FilledButton.styleFrom(
+                        minimumSize: const Size.fromHeight(48),
+                      ),
+                      child: const Text('Book a Tour'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => ChatScreen(otherUserName: guideName),
-            ),
-          );
-        },
-        icon: const Icon(Icons.message),
-        label: const Text('Send Message'),
-      ),
+    );
+  }
+
+  Widget _buildStat(
+    BuildContext context,
+    String value,
+    String label,
+    IconData icon,
+  ) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, color: colorScheme.primary, size: 24),
+        const SizedBox(height: AppTheme.paddingXs),
+        Text(
+          value,
+          style: textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: colorScheme.onSurface,
+          ),
+        ),
+        Text(
+          label,
+          style: textTheme.bodySmall?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
     );
   }
 }

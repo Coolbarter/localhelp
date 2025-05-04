@@ -23,17 +23,19 @@ class ChatBubble extends StatelessWidget {
           vertical: AppTheme.paddingMd - 6,
         ),
         decoration: BoxDecoration(
-          color: isMe
-              ? Theme.of(context).colorScheme.primaryContainer
-              : Theme.of(context).colorScheme.secondaryContainer,
+          color:
+              isMe
+                  ? Theme.of(context).colorScheme.primaryContainer
+                  : Theme.of(context).colorScheme.secondaryContainer,
           borderRadius: BorderRadius.circular(AppTheme.borderRadiusLg),
         ),
         child: Text(
           message,
           style: TextStyle(
-            color: isMe
-                ? Theme.of(context).colorScheme.onPrimaryContainer
-                : Theme.of(context).colorScheme.onSecondaryContainer,
+            color:
+                isMe
+                    ? Theme.of(context).colorScheme.onPrimaryContainer
+                    : Theme.of(context).colorScheme.onSecondaryContainer,
           ),
         ),
       ),
@@ -41,65 +43,66 @@ class ChatBubble extends StatelessWidget {
   }
 }
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   final String otherUserName;
 
   const ChatScreen({super.key, required this.otherUserName});
 
   @override
+  _ChatScreenState createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    // Placeholder messages
-    final messages = [
-      {'message': 'Hi, I\'m interested in a tour!', 'isMe': true},
-      {
-        'message':
-            'Hello! I\'d be happy to help. When are you planning to visit?',
-        'isMe': false,
-      },
-      {
-        'message': 'I\'ll be there next week, from Monday to Friday',
-        'isMe': true,
-      },
-      {
-        'message': 'Perfect! I\'m available on Tuesday and Wednesday',
-        'isMe': false,
-      },
-      {'message': 'How about Tuesday morning?', 'isMe': true},
-      {'message': 'Sounds good! Let\'s meet at 9 AM', 'isMe': false},
-    ];
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
 
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=1'),
-              onBackgroundImageError: (exception, stackTrace) {},
+              radius: 16,
+              backgroundColor: colorScheme.surfaceContainerHighest,
+              backgroundImage: const AssetImage('assets/images/1.jpg'),
             ),
-            const SizedBox(width: AppTheme.paddingMd),
-            Text(otherUserName),
+            const SizedBox(width: AppTheme.paddingSm),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.otherUserName, style: textTheme.titleMedium),
+                Text(
+                  'Online',
+                  style: textTheme.bodySmall?.copyWith(
+                    color: colorScheme.primary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
+        actions: [
+          IconButton(icon: const Icon(Icons.more_vert), onPressed: () {}),
+        ],
       ),
       body: Column(
         children: [
-          // Messages List
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              itemCount: messages.length,
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppTheme.paddingMd,
+                vertical: AppTheme.paddingLg,
+              ),
+              itemCount: 10,
               itemBuilder: (context, index) {
-                final message = messages[index];
-                return ChatBubble(
-                  message: message['message'] as String,
-                  isMe: message['isMe'] as bool,
-                );
+                final bool isMe = index % 2 == 0;
+                return _buildMessageBubble(context, isMe);
               },
             ),
           ),
-
-          // Message Input
           Container(
             padding: const EdgeInsets.all(AppTheme.paddingMd),
             decoration: BoxDecoration(
@@ -120,11 +123,13 @@ class ChatScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: 'Type a message...',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppTheme.borderRadiusLg),
+                          borderRadius: BorderRadius.circular(
+                            AppTheme.borderRadiusLg,
+                          ),
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+                        fillColor: colorScheme.surfaceContainerHighest.withOpacity(0.5),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: AppTheme.paddingMd,
                           vertical: AppTheme.paddingMd - 4,
@@ -138,10 +143,10 @@ class ChatScreen extends StatelessWidget {
                     onPressed: () {
                       // TODO: Send message
                     },
-                    icon: const Icon(Icons.send),
+                    icon: const Icon(Icons.send_rounded),
                     style: IconButton.styleFrom(
-                      backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: theme.colorScheme.onPrimary,
+                      backgroundColor: colorScheme.primary,
+                      foregroundColor: colorScheme.onPrimary,
                       padding: const EdgeInsets.all(AppTheme.paddingMd),
                     ),
                   ),
@@ -149,6 +154,75 @@ class ChatScreen extends StatelessWidget {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMessageBubble(BuildContext context, bool isMe) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppTheme.paddingMd),
+      child: Row(
+        mainAxisAlignment:
+            isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: [
+          if (!isMe) ...[
+            CircleAvatar(
+              radius: 16,
+              backgroundColor: colorScheme.surfaceContainerHighest,
+              backgroundImage: const AssetImage('assets/images/1.jpg'),
+            ),
+            const SizedBox(width: AppTheme.paddingSm),
+          ],
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.7,
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppTheme.paddingMd,
+              vertical: AppTheme.paddingSm,
+            ),
+            decoration: BoxDecoration(
+              color: isMe ? colorScheme.primary : colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(AppTheme.borderRadiusLg),
+                topRight: const Radius.circular(AppTheme.borderRadiusLg),
+                bottomLeft: Radius.circular(isMe ? AppTheme.borderRadiusLg : 4),
+                bottomRight: Radius.circular(
+                  isMe ? 4 : AppTheme.borderRadiusLg,
+                ),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'This is a sample message that might be a bit long to test the bubble.',
+                  style: textTheme.bodyMedium?.copyWith(
+                    color:
+                        isMe
+                            ? colorScheme.onPrimary
+                            : colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '12:34 PM',
+                  style: textTheme.labelSmall?.copyWith(
+                    color:
+                        isMe
+                            ? colorScheme.onPrimary.withOpacity(0.7)
+                            : colorScheme.onSurfaceVariant.withOpacity(0.7),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (isMe) const SizedBox(width: AppTheme.paddingSm),
         ],
       ),
     );
