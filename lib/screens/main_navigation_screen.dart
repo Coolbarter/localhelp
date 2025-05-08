@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'explore_screen.dart';
-import 'chat_list_screen.dart';
+import '../features/chat/views/chat_list_screen.dart';
 import 'profile_screen.dart';
 import 'guide_dashboard_screen.dart';
 

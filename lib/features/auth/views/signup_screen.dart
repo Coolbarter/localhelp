@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'main_navigation_screen.dart';
-import 'signup_screen.dart';
+import 'package:flutter_application_1/theme/app_theme.dart'
+    as ThemeAlias; // Adjust import if needed
+import 'login_screen.dart';
+import '../../../screens/main_navigation_screen.dart'; // Assuming this is the destination after signup
 
-class AppTheme {
-  static const double paddingLg = 24.0;
-  static const double paddingSm = 12.0;
-  static const double paddingMd = 16.0;
-}
-
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
+  String _selectedUserType = 'Tourist'; // Default selection
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -55,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(
-                AppTheme.paddingLg,
+                ThemeAlias.AppTheme.paddingLg,
                 AppTheme.paddingSm,
                 AppTheme.paddingLg,
                 AppTheme.paddingLg,
@@ -64,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Welcome Back',
+                    'Create Your Account',
                     style: textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: colorScheme.onSurface,
@@ -72,6 +70,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: AppTheme.paddingLg * 1.5),
+
+                  TextField(
+                    keyboardType: TextInputType.name,
+                    decoration: const InputDecoration(
+                      labelText: 'Full Name',
+                      prefixIcon: Icon(Icons.person_outline_rounded),
+                    ),
+                  ),
+                  const SizedBox(height: AppTheme.paddingMd),
 
                   TextField(
                     keyboardType: TextInputType.emailAddress,
@@ -89,18 +96,49 @@ class _LoginScreenState extends State<LoginScreen> {
                       prefixIcon: Icon(Icons.lock_outline_rounded),
                     ),
                   ),
+                  const SizedBox(height: AppTheme.paddingLg),
 
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        // TODO: Implement forgot password
-                      },
-                      child: const Text('Forgot Password?'),
+                  Text(
+                    'Select Your Role:',
+                    style: textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: AppTheme.paddingSm),
+
+                  SegmentedButton<String>(
+                    segments: const [
+                      ButtonSegment(
+                        value: 'Tourist',
+                        label: Text('Tourist'),
+                        icon: Icon(Icons.luggage_outlined),
+                      ),
+                      ButtonSegment(
+                        value: 'Local Guide',
+                        label: Text('Local Guide'),
+                        icon: Icon(Icons.flag_outlined),
+                      ),
+                    ],
+                    selected: {_selectedUserType},
+                    onSelectionChanged: (Set<String> newSelection) {
+                      setState(() {
+                        _selectedUserType = newSelection.first;
+                      });
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.resolveWith((
+                        states,
+                      ) {
+                        if (states.contains(WidgetState.selected)) {
+                          return colorScheme.primaryContainer;
+                        }
+                        return colorScheme.surfaceContainerHighest;
+                      }),
                     ),
                   ),
 
-                  const SizedBox(height: AppTheme.paddingLg),
+                  const SizedBox(height: AppTheme.paddingLg * 1.5),
 
                   FilledButton(
                     onPressed: () {
@@ -111,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     },
-                    child: const Text('Log In'),
+                    child: const Text('Create Account'),
                   ),
 
                   const SizedBox(height: AppTheme.paddingMd),
@@ -120,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Don\'t have an account? ',
+                        'Already have an account? ',
                         style: textTheme.bodyMedium?.copyWith(
                           color: colorScheme.onSurfaceVariant,
                         ),
@@ -130,10 +168,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             () => Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const SignupScreen(),
+                                builder: (_) => const LoginScreen(),
                               ),
                             ),
-                        child: const Text('Sign Up'),
+                        child: const Text('Log In'),
                       ),
                     ],
                   ),

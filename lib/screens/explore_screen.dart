@@ -881,8 +881,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     imageUrl,
                     fit: BoxFit.cover,
                     errorBuilder:
-                        (ctx, err, st) =>
-                            Container(color: colorScheme.surfaceContainerHighest),
+                        (ctx, err, st) => Container(
+                          color: colorScheme.surfaceContainerHighest,
+                        ),
                   ),
                   // Optional dark overlay
                   // Container(color: Colors.black.withOpacity(0.1)),

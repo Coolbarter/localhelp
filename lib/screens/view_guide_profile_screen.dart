@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/theme/app_theme.dart';
-import 'chat_screen.dart';
+import '../features/chat/views/chat_screen.dart';
 
 class ViewGuideProfileScreen extends StatefulWidget {
   final String guideName;
@@ -189,7 +189,8 @@ class _ViewGuideProfileScreenState extends State<ViewGuideProfileScreen> {
                               .map(
                                 (specialty) => Chip(
                                   label: Text(specialty),
-                                  backgroundColor: colorScheme.surfaceContainerHighest,
+                                  backgroundColor:
+                                      colorScheme.surfaceContainerHighest,
                                   labelStyle: textTheme.bodyMedium?.copyWith(
                                     color: colorScheme.onSurfaceVariant,
                                   ),

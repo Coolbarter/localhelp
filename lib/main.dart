@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'screens/welcome_screen.dart';
+import 'package:provider/provider.dart';
+import 'features/auth/controllers/auth_controller.dart';
+import 'features/chat/controllers/chat_controller.dart';
+import 'features/explore/controllers/explore_controller.dart';
+import 'features/guide/controllers/guide_controller.dart';
+import 'features/review/controllers/review_controller.dart';
+import 'features/auth/views/welcome_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -11,10 +17,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Local Guide App',
-      theme: AppTheme.themeData,
-      home: const WelcomeScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthController()),
+        ChangeNotifierProvider(create: (_) => ChatController()),
+        ChangeNotifierProvider(create: (_) => ExploreController()),
+        ChangeNotifierProvider(create: (_) => GuideController()),
+        ChangeNotifierProvider(create: (_) => ReviewController()),
+      ],
+      child: MaterialApp(
+        title: 'Local Guide App',
+        theme: AppTheme.themeData,
+        home: const WelcomeScreen(),
+      ),
     );
   }
 }

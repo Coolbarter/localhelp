@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/theme/app_theme.dart'
-    as ThemeAlias; // Adjust import if needed
-import 'login_screen.dart';
-import 'main_navigation_screen.dart'; // Assuming this is the destination after signup
+import '../../../screens/main_navigation_screen.dart';
+import 'signup_screen.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
-
-  @override
-  State<SignupScreen> createState() => _SignupScreenState();
+class AppTheme {
+  static const double paddingLg = 24.0;
+  static const double paddingSm = 12.0;
+  static const double paddingMd = 16.0;
 }
 
-class _SignupScreenState extends State<SignupScreen> {
-  String _selectedUserType = 'Tourist'; // Default selection
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -53,7 +55,7 @@ class _SignupScreenState extends State<SignupScreen> {
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(
-                ThemeAlias.AppTheme.paddingLg,
+                AppTheme.paddingLg,
                 AppTheme.paddingSm,
                 AppTheme.paddingLg,
                 AppTheme.paddingLg,
@@ -62,7 +64,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Create Your Account',
+                    'Welcome Back',
                     style: textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: colorScheme.onSurface,
@@ -70,15 +72,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: AppTheme.paddingLg * 1.5),
-
-                  TextField(
-                    keyboardType: TextInputType.name,
-                    decoration: const InputDecoration(
-                      labelText: 'Full Name',
-                      prefixIcon: Icon(Icons.person_outline_rounded),
-                    ),
-                  ),
-                  const SizedBox(height: AppTheme.paddingMd),
 
                   TextField(
                     keyboardType: TextInputType.emailAddress,
@@ -96,49 +89,18 @@ class _SignupScreenState extends State<SignupScreen> {
                       prefixIcon: Icon(Icons.lock_outline_rounded),
                     ),
                   ),
+
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        // TODO: Implement forgot password
+                      },
+                      child: const Text('Forgot Password?'),
+                    ),
+                  ),
+
                   const SizedBox(height: AppTheme.paddingLg),
-
-                  Text(
-                    'Select Your Role:',
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: colorScheme.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: AppTheme.paddingSm),
-
-                  SegmentedButton<String>(
-                    segments: const [
-                      ButtonSegment(
-                        value: 'Tourist',
-                        label: Text('Tourist'),
-                        icon: Icon(Icons.luggage_outlined),
-                      ),
-                      ButtonSegment(
-                        value: 'Local Guide',
-                        label: Text('Local Guide'),
-                        icon: Icon(Icons.flag_outlined),
-                      ),
-                    ],
-                    selected: {_selectedUserType},
-                    onSelectionChanged: (Set<String> newSelection) {
-                      setState(() {
-                        _selectedUserType = newSelection.first;
-                      });
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.resolveWith((
-                        states,
-                      ) {
-                        if (states.contains(WidgetState.selected)) {
-                          return colorScheme.primaryContainer;
-                        }
-                        return colorScheme.surfaceContainerHighest;
-                      }),
-                    ),
-                  ),
-
-                  const SizedBox(height: AppTheme.paddingLg * 1.5),
 
                   FilledButton(
                     onPressed: () {
@@ -149,7 +111,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       );
                     },
-                    child: const Text('Create Account'),
+                    child: const Text('Log In'),
                   ),
 
                   const SizedBox(height: AppTheme.paddingMd),
@@ -158,7 +120,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Already have an account? ',
+                        'Don\'t have an account? ',
                         style: textTheme.bodyMedium?.copyWith(
                           color: colorScheme.onSurfaceVariant,
                         ),
@@ -168,10 +130,10 @@ class _SignupScreenState extends State<SignupScreen> {
                             () => Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const LoginScreen(),
+                                builder: (_) => const SignupScreen(),
                               ),
                             ),
-                        child: const Text('Log In'),
+                        child: const Text('Sign Up'),
                       ),
                     ],
                   ),
